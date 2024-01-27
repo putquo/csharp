@@ -9,5 +9,6 @@
 
   <ItemGroup>
     <PackageReference Include="BenchmarkDotNet" Version="0.13.2" />
+    <PackageReference Include="JunitXml.TestLogger" Version="3.0.134" />
   </ItemGroup>
 </Project>
