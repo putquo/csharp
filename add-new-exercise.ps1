@@ -65,7 +65,12 @@ function Add-Project {
 
     $nugetItemGroup = $proj.Project.ItemGroup;
     $nugetItemGroup.RemoveAll();
-    $nugetList = @(@{nuget = "Microsoft.NET.Test.Sdk"; Version = "16.8.3" }, @{nuget = "xunit"; Version = "2.4.1" }, @{nuget = "xunit.runner.visualstudio"; version = "2.4.3" })
+    $nugetList = @(
+        @{nuget = "JunitXml.TestLogger"; Version = "3.0.134" },
+        @{nuget = "Microsoft.NET.Test.Sdk"; Version = "16.8.3" },
+        @{nuget = "xunit"; Version = "2.4.1" },
+        @{nuget = "xunit.runner.visualstudio"; version = "2.4.3" }
+    )
     $nugetList | ForEach-Object {
         $packageElement = $proj.CreateElement("PackageReference");
         $includeAttribute = $proj.CreateAttribute("Include");
