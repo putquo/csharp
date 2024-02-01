@@ -86,7 +86,7 @@ function Test-ExerciseImplementation($Exercise, $BuildDir, $ConceptExercisesDir,
     Write-Output "Running tests"
 
     if (-Not $Exercise) {
-        Invoke-Tests -Path "$BuildDir/Exercises.sln" -IsCI $IsCI
+        Invoke-Tests -Path $BuildDir -IsCI $IsCI
     }
     elseif (Test-Path "$ConceptExercisesDir/$Exercise") {
         Invoke-Tests -Path "$ConceptExercisesDir/$Exercise" -IsCI $IsCI
@@ -101,7 +101,10 @@ function Test-ExerciseImplementation($Exercise, $BuildDir, $ConceptExercisesDir,
 
 function Invoke-Tests($Path, $IsCI) {
     if ($IsCI) {
-        Invoke-CallScriptExitOnError { dotnet test "$Path" --logger "junit;LogFilePath=results/test.xml" }
+        Get-ChildItem -Path $Path -Include "*.csproj" -Recurse | ForEach-Object {
+            Invoke-CallScriptExitOnError { dotnet add $_.FullName package JunitXml.TestLogger -n -v 3.0.134 }
+        }
+        Invoke-CallScriptExitOnError { dotnet test $Path --logger "junit;LogFilePath=results/test.xml" }
     }
     else {
         Invoke-CallScriptExitOnError { dotnet test "$Path" }
